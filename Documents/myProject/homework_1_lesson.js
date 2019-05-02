@@ -72,12 +72,12 @@ studentRating = rating => {
 studentRating(21);
 
 //циклы
-//1.Найти сумму четных чисел и их количество в диапазоне от 1 до 99
+//1.Найти сумму четных чисел и их количество в диапазоне от 1 до 99 (от x до y)
 
-getAppendOfEvenNumbers1To99 = () => {
+getAppendOfEvenNumbers1To99 = (x, y) => {
     let sumOfEven = 0;
     let quantityOfEven = 0;
-    for(let i = 1; i <= 99; i++) {
+    for(let i = x; i <= y; i++) {
         if (i % 2 === 0) {
             sumOfEven += i;
             quantityOfEven++
@@ -85,9 +85,9 @@ getAppendOfEvenNumbers1To99 = () => {
     }
     console.log("сумма четных чисел = " + sumOfEven + ", количество четных чисел = " + quantityOfEven);
 };
-getAppendOfEvenNumbers1To99();
+getAppendOfEvenNumbers1To99(1, 99);
 
-//Проверить простое ли число? (число называется простым, если оно делится только само на себя и на 1)
+//2.Проверить простое ли число? (число называется простым, если оно делится только само на себя и на 1)
 isPrimeNumber = number => {
     if (number < 1)
         return;
@@ -105,7 +105,7 @@ isPrimeNumber = number => {
         }
     }
 };
-isPrimeNumber(7);
+isPrimeNumber(577);
 
 //3.Найти корень натурального числа с точностью до целого (рассмотреть вариант
 // последовательного подбора и метод бинарного поиска)
@@ -121,7 +121,6 @@ getSquareRootCycle = x => {
     }
     console.log("Квадратный корень равен " + rez)
 };
-
 getSquareRootCycle(25);
 
 //4.Вычислить факториал числа n. n! = 1*2*…*n-1*n;!
@@ -130,7 +129,6 @@ getFactorial = x => {
     if (x <= 0) return;
     let rez = x;
   while (x > 1)  {
-
       rez = rez * (x - 1);
       x = x - 1;
   }
@@ -141,15 +139,17 @@ getFactorial(7);
 //5.Посчитать сумму цифр заданного числа
 
 getSumOfDigit = x => {
-    if (x <= 0) return;
-    let rez = x;
-    while (x > 1) {
-        rez = rez + (x - 1);
-        x = x - 1;
+    let rez = 0;
+    let sum = 0;
+    while (x) {
+        sum = x % 10;
+        x = (x - sum)/10;
+        rez += sum;
+
     }
     console.log("cумма цифр равна " + rez)
 };
-getSumOfDigit(90);
+getSumOfDigit(909);
 
 //6.Вывести число, которое является зеркальным отображением последовательности цифр заданного числа,
 // например, задано число 123, вывести 321.
@@ -159,14 +159,12 @@ getMirrorNum = x => {
     let integer = 0;
     let integerSum = 0;
     let exponent = 0;
-    while(x>0) {
-
+    while(x > 0) {
         exponent = x.toString().length - 1;
         rez = x % 10;
         integer = rez * Math.pow(10, exponent);
         integerSum = integer + integerSum;
         x = Math.floor(x / 10);
-
     }
 console.log("Зеркальное отображение числа " + integerSum);
     };
@@ -249,7 +247,7 @@ getQuantityOfOddElem(array);
 
 //8. Поменять местами первую и вторую половину массива, например, для массива 1 2 3 4, результат 3 4 1 2
 
-const array1 = [1, 2, 3, 4, 5];
+const array1 = [1, 2, 3, 4, 5, 6, 7];
 
 getSwapItems = array => {
     let j = 0;
@@ -268,14 +266,13 @@ getSwapItems = array => {
             array[i] = array[middleIndex + i + 1];
             array[middleIndex + i + 1] = buffer;
         }
-
     }
     console.log(array + " замена половин массива, с учетом четности массива");
 };
 getSwapItems(array1);
 
 //9. Отсортировать массив Пузырьком
-minToMaxArr = array => {
+bubbleSort = array => {
     for (let i = 0; i < array.length; i++) {
         for (let j = 0; j < array.length - 1; j++) {
             let a = array[j];
@@ -286,9 +283,45 @@ minToMaxArr = array => {
             }
         }
     }
-    console.log("Bubble " + array);
+    console.log("Bubble sort " + array);
 };
-minToMaxArr(array);
+bubbleSort(array);
+
+let array2 = [4, 5, 9, 3, -9, 23];
+
+//сортировка выбором
+selectionSort = array => {
+    for (let i = 0; i < array.length - 1; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < array.length; j++) {
+            if (array[minIndex] > array[j]) {
+                minIndex = j
+            }
+        }
+        if (minIndex !== i) {
+            [array[i], array[minIndex]] = [array[minIndex], array[i]]
+        }
+    }
+    console.log("selection sort " + array)
+};
+
+selectionSort(array2);
+
+let array3 = [4, 5, 9, 3, -9, 23];
+//сортировка вставками
+insertionSort = array => {
+    for (let i = 0; i < array.length; i++) {
+        const current = array[i];
+        let j = i;
+        while (j > 0 && array[j - 1] > current) {
+            array[j] = array[j - 1];
+            j--
+        }
+        array[j] = current;
+    }
+    console.log("insertion sort " + array)
+};
+insertionSort(array3)
 //Функции
 //1.Получить строковое название дня недели по номеру дня.
 
@@ -549,51 +582,138 @@ getNumberInWords999Billions = y => {
 getNumberInWords999Billions(658111199876);
 
 // // 3.Вводим строку, которая содержит число, написанное прописью (0-999). Получить само число
-// getWordsInNumbers999 = w => {
-//     if (w === "один") {
-//         console.log("1")
-//     } else if (w === "два") {
-//         console.log("2")
-//     } else if (w === "три") {
-//         console.log("3")
-//     } else if (w === "четыре") {
-//         console.log("4")
-//     } else if (w === "пять") {
-//         console.log("5")
-//     } else if (w === "шесть") {
-//         console.log("6")
-//     } else if (w === "семь") {
-//         console.log("7")
-//     } else if (w === "восемь") {
-//         console.log("8")
-//     } else if (w === "девять") {
-//         console.log("9")
-//     } else if (w === "ноль") {
-//         console.log("0")
-//     } else if (w === "десять") {
-//         console.log("10")
-//     } else if (w === "одинадцать") {
-//         console.log("11")
-//     } else if (w === "двенадцать") {
-//         console.log("12")
-//     } else if (w === "тринадцать") {
-//         console.log("13")
-//     } else if (w === "четырнадцать") {
-//         console.log("14")
-//     } else if (w === "пятнадцать") {
-//         console.log("15")
-//     } else if (w === "шестнадцать") {
-//         console.log("16")
-//     } else if (w === "семнадцать") {
-//         console.log("17")
-//     } else if (w === "восемндацать") {
-//         console.log("18")
-//     } else if (w === "девятнадцать") {
-//         console.log("19")
-//     }
-// };
-//
-//     getWordsInNumbers999("один")
+getWordsInNumbers999 = (z, y, x) => {
+    let n = 0;
+    let l = 0;
+    let k = 0;
+    if (x === "ноль") {
+        n = 0;
+        console.log(n)
+    }
+    let tens = x => {
+    if (x === "один") {
+        n = 1;
+        console.log(n)
+    } else if (x === "два") {
+        n = 2;
+        console.log(n)
+    } else if (x === "три") {
+        n = 3;
+        console.log(n)
+    } else if (x === "четыре") {
+        n = 4;
+        console.log(n)
+    } else if (x === "пять") {
+        n = 5;
+        console.log(n)
+    } else if (x === "шесть") {
+        n = 6;
+        console.log(n)
+    } else if (x === "семь") {
+        n = 7;
+        console.log(n)
+    } else if (x === "восемь") {
+        n = 8;
+        console.log(n)
+    } else if (x === "девять") {
+        n = 9;
+        console.log(n)
+    }
+    };
+    if (x === "десять") {
+        n = 10;
+        console.log(n)
+    } else if (x === "одинадцать") {
+        n = 11;
+        console.log(n)
+    } else if (x === "двенадцать") {
+        n = 12;
+        console.log(n)
+    } else if (x === "тринадцать") {
+        n = 13;
+        console.log(n)
+    } else if (x === "четырнадцать") {
+        n = 14;
+        console.log(n)
+    } else if (x === "пятнадцать") {
+        n = 15;
+        console.log(n)
+    } else if (x === "шестнадцать") {
+        n = 16;
+        console.log(n)
+    } else if (x === "семнадцать") {
+        n = 17;
+        console.log(n)
+    } else if (x === "восемндацать") {
+        n = 18;
+        console.log(n)
+    } else if (x === "девятнадцать") {
+        n = 19;
+        console.log(n)
+    }
+    tens(x);
+    let thousands = y => {
+        if (y === "двадцать") {
+            l = 20 + n;
+            console.log(l)
+        } else if (y === "тридцать") {
+            l = 30 + n;
+            console.log(l)
+        } else if (y === "сорок") {
+            l = 40 + n;
+            console.log(l)
+        } else if (y === "пятьдесят") {
+            l = 50 + n;
+            console.log(l)
+        } else if (y === "шестьдесят") {
+            l = 60 + n;
+            console.log(l)
+        } else if (y === "семьдесят") {
+            l = 70 + n;
+            console.log(l)
+        } else if (y === "восемьдесят") {
+            l = 80 + n;
+            console.log(l)
+        } else if (y === "девяносто") {
+            l = 90 + n;
+            console.log(l)
+        }
+    };
+    thousands(y);
+    let hundreds = z => {
+        if (z === "сто") {
+            k = 100 + l;
+            console.log(k)
+        } else if (z === "двести") {
+            k = 200 + l;
+            console.log(k)
+        } else if (z === "триста") {
+            k = 300 + l;
+            console.log(k)
+        } else if (z === "четыреста") {
+            k = 400 + l;
+            console.log(k)
+        } else if (z === "пятьсот") {
+            k = 500 + l;
+            console.log(k)
+        } else if (z === "шестьсот") {
+            k = 600 + l;
+            console.log(k)
+        } else if (z === "семьсот") {
+            k = 700 + l;
+            console.log(k)
+        } else if (z === "восемьсот") {
+            k = 800 + l;
+            console.log(k)
+        } else if (z === "девятьсот") {
+            k = 900 + l;
+            console.log(k)
+        }
+    };
+    hundreds(z)
+};
+
+    getWordsInNumbers999("девятьсот", "двадцать", "девять")
 
 
 //4.Найти расстояние между двумя точками в двумерном декартовом пространстве.
@@ -604,11 +724,3 @@ getDistance = (x1, y1, x2, y2) => {
     console.log("Расстояние между координатами: " + distance)
 };
 getDistance(2,1,5,2);
-
-
-
-
-
-
-
-
